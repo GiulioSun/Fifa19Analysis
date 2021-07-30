@@ -5,12 +5,6 @@
 
 #===================================================================================
 
-# -------------------------------------
-# Installiamo e importiamo le librerie 
-# -------------------------------------
-#install.packages("FactoMineR")
-#install.packages("corrplot")
-
 library(FactoMineR)
 library(MASS)
 library(corrplot)
@@ -61,15 +55,9 @@ hist(df[,21], main = "Overall distribuction", col = "aquamarine3", xlab = "overa
 fifa.pca <- PCA(fifaDf, scale.unit =  TRUE , quali.sup = 21)
 
 # -------------------------------------
-# Stampiamo gli oggetti generati dalla funzione PCA
-# -------------------------------------
-print(fifa.pca)
-
-# -------------------------------------
 # SUMMARY della PCA
 # --------------------------------------
 summary(fifa.pca)
-
 
 #-----------------------------------------
 #Autovalori e Varianza 
@@ -82,40 +70,28 @@ abline(h=2, col="blue")
 plot(autovalori, type = "lines", main = "Scree Plot", xlab = "Componenti")
 plot(fifa.pca$eig[1:7, 3], type = "lines", main = "Varianza cumulata", xlab = "Componenti", ylab = "Percentuale di varianza spiegata dalle componenti")
 
-
 #-----------------------------------------
 #Medie e deviazioni standard
 #-----------------------------------------
 round(cbind(fifa.pca$call$centre, fifa.pca$call$ecart.type),2)
 
-# -------------------------------------
-# Correlazione delle variabili con le componenti principali
-# -------------------------------------
-CorrCP <- dimdesc(fifa.pca, proba = 1)
-CorrCP$Dim.1                          
-CorrCP$Dim.2
-CorrCP$Dim.3
-
-# Possiamo calcolarla anche in questo modo:
 #-----------------------------------------
-# Correlazione variabili/componenti                                   #
-#-----------------------------------------                            #
-fifa.pca$var$cor                                                      #
-# NOTA BENE
-#-----------------------------------------                            # Essendo che abbiamo standardizzato
-# Coordinate delle variabili sulle componenti principali              # le variabili originarie avremo che 
-#-----------------------------------------                            # le coordinate = correlazione
-fifa.pca$var$coord                                                    #
-#
-#-----------------------------------------                            #
+# Correlazione variabili/componenti                                   
+#-----------------------------------------                            
+fifa.pca$var$cor                                                      
+
+#-----------------------------------------                            
+# Coordinate delle variabili sulle componenti principali               
+#-----------------------------------------                            
+fifa.pca$var$coord                                                    
+
+#-----------------------------------------                            
 # Cos2 Qualità delle varibili, quanto i vettori delle variabili sono vicine al cerchio delle correlazioni
-# ci indica quantociascuna componente spiega una variabile
 #-----------------------------------------
 fifa.pca$var$cos2
 
 #-----------------------------------------
 # Contributo delle variabili alle componenti principali
-# ci indica quanto ogni variabile spiega la compennte
 #-----------------------------------------
 fifa.pca$var$contrib
 
@@ -123,32 +99,6 @@ fifa.pca$var$contrib
 # Caratterizzazione degli assi
 #-----------------------------------------
 dimdesc(fifa.pca)
-
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# Quante PC dovremmo tenere? Questo è probabilmente il problema principale quando si esegue una PCA. 
-#Poiché il criterio per una buona proiezione nella PCA è una elevata varianza per quella proiezione, 
-#dovremmo tenere solo quelle componenti principali con varianze elevate. Il problema, pertento, 
-#coinvolge i valori degli autovalori della matrice di varianza/covarianza (o correlazione) campionaria.
-#Diversi criteri sono stati introdoti in letteratura, e qui di seguito ne vediamo i più popolari:
-
-#varianza spiegata: si tiene un numero di componenti sufficiente a riprodurre una grande percentuale
-#pre-specificata della variabilità complessiva delle variabili originarie. 
-#Sono usualmente suggeriti valori compresi tra il 70% e il 90%.
-
-#scree plot: questo è un grafico che rappresenta gli aoutovalori ordinati in senso decescente (asse y) 
-#verso il loro numero d’ordine (assex). Se i più grandi autovalori campionari dominano in dimensione, 
-#ed i rimanenti autovalori campionari sono molto piccoli, allora lo scree plot mostrerà un “gomito” nel 
-#grafico in corrispondenza alla divisione tra “grandi” e “piccoli” valori degli autovalori campionari. 
-#La posizione in cui si presenta il gomito, può essere usata come numero di PC da tenere.
-
-#Regola di Kaiser: tenere solo le PC i cui autovalori superano il valore 1. Questa linea guida si 
-#basa sull’idea che, poichè la variabilità totale di tutte le p variabili standardizzate è uguale 
-#a p, ne segue che una PCA dovrebbe spiegare almeno una variazione pari al valore medio di una singola
-#variabile standardizzata. Questa regola è popolare ma controversa; c’è evidenza che il valore limite 
-#di 1 è generalmente troppo alto. Una regola modificata dice di tenere tutte le PC i cui autovalori 
-#della correlazione campionaria superano 0.7. Ovviamente, per dati non standardizzati, questa regola
-#non ha senso applicarla.
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 #===================================================================================
 
